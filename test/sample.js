@@ -5,6 +5,10 @@ it('should add two numbers', ()=>{
     expect(result).to.be.eq(8);
 })
 it('should run for even one number', ()=>{
-    const result=add(5,5);
-    expect(result).to.be.eq(10);
+    const result=add(5);
+    expect(result).to.be.eq(5);
+})
+it('should run for no numbers', ()=>{
+    const result=add();
+    expect(result).to.be.eq(0);
 })

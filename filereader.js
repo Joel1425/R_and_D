@@ -66,6 +66,23 @@ for (x=0;x<res.body.length;x++){
     var node = new newNode(res.body[x].type, res.body[x]); // mapping to the root node
     dfs(root,node);
 }
+function printITNames(){
+    console.log("\nit block names are:\n");
+    for (const [key, value] of map.entries()) {
+        for (v=0;v<value.length;v++){
+            if (value[v].object_desc.callee != undefined && value[v].object_desc.callee.name == 'it') 
+            console.log(value[v].object_desc.arguments[0].value);
+        }
+      }
+}
+function printCallee(){
+    for (const [key, value] of map.entries()) {
+        for (v=0;v<value.length;v++){
+            if (value[v].object_desc.callee != undefined && value[v].object_desc.callee.type == 'Identifier') 
+            console.log(value[v].object_desc);
+        }
+    }
+}
 function printFunctions(){
     for (const [key, value] of map.entries()) {
         for (v=0;v<value.length;v++){
@@ -90,7 +107,9 @@ function printMap(){
         console.log("\n");
       }
 };
-printMap();
+// printITNames();
+// printCallee();
+// printMap();
 printFunctions();
 
 
