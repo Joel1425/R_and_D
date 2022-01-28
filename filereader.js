@@ -5,8 +5,9 @@ function getHash(s){
     var hash = crypto.createHash('sha256').update(s.toString()).digest('hex'); // sha256
     return hash;
 }
-var global_data = fs.readFileSync("test/sample.js").toString();
+var global_data = fs.readFileSync("./new_sample.js").toString();
 var res=getTrace(global_data);
+var it_names = [];
 function newNode(type, object_desc){ // creating structure
     // this.id=id;
     this.type=type;
@@ -26,12 +27,16 @@ function dfs(parent,child){
         map.set(parent,[]);
     }
     map.get(parent).push(child);
+    // if (child.type == 'Identifier' && child.object_desc.name == 'it')
+    // {
+    //     // console.log(child);
+    // }
     // console.log(child.object_desc);
     for (const property in child.object_desc){
         // if (typeof(child.object_desc[property]) != "object" || child.object_desc[property]=="undefined") continue;
         if (Array.isArray(child.object_desc[property])){
             for (i=0;i<child.object_desc[property].length;i++){
-                console.log(child.object_desc[property][i]);
+                // console.log(child.object_desc[property][i]); // Undead these
                 var node = new newNode(child.object_desc[property][i].type, child.object_desc[property][i]); // mapping to the current root node
                 dfs(child,node);
             }
@@ -49,7 +54,7 @@ function dfs(parent,child){
         // console.log("in property\n");
         // console.log(property);
         // console.log(child.object_desc[property].type);
-        console.log(child.object_desc[property]);
+        // console.log(child.object_desc[property]); // Undead these 
         var node = new newNode(child.object_desc[property].type, child.object_desc[property]); // mapping to the current root node
         dfs(child,node);
     }
@@ -60,7 +65,17 @@ for (x=0;x<res.body.length;x++){
     var node = new newNode(res.body[x].type, res.body[x]); // mapping to the root node
     dfs(root,node);
 }
-
+function printMap(){
+    for (const [key, value] of map.entries()) {
+        console.log("The key is: \n");
+        console.log(key);
+        console.log("\n");
+        console.log("The values are: \n");
+        console.log(value);
+        console.log("\n");
+      }
+};
+printMap();
 
 
 

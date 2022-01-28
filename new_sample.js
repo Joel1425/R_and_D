@@ -5,4 +5,3 @@ function main(){
     var result = grandfather(100);
     console.log(result);
 }
-main();
