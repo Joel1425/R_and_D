@@ -1,11 +1,12 @@
 const fs= require('fs');
 const {getTrace} = require('./file.js');
+const {getCode} = require('./magic.js')
 var crypto = require('crypto');
 function getHash(s){
     var hash = crypto.createHash('sha256').update(s.toString()).digest('hex'); // sha256
     return hash;
 }
-var global_data = fs.readFileSync("./new_sample.js").toString();
+var global_data = fs.readFileSync("test/sample.js").toString();
 var res=getTrace(global_data);
 var it_names = [];
 function newNode(type, object_desc){ // creating structure
@@ -65,6 +66,20 @@ for (x=0;x<res.body.length;x++){
     var node = new newNode(res.body[x].type, res.body[x]); // mapping to the root node
     dfs(root,node);
 }
+function printFunctions(){
+    for (const [key, value] of map.entries()) {
+        for (v=0;v<value.length;v++){
+            if (value[v].type == 'FunctionDeclaration' 
+            || 
+            value[v].type == 'ArrowFunctionExpression' 
+            ){
+                var ast_code=value[v].object_desc;
+                var res_code=getCode(ast_code);
+                console.log(res_code);
+            }
+        }
+      }
+}
 function printMap(){
     for (const [key, value] of map.entries()) {
         console.log("The key is: \n");
@@ -76,6 +91,7 @@ function printMap(){
       }
 };
 printMap();
+printFunctions();
 
 
 

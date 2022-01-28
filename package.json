@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "acorn": "^8.7.0",
+    "astring": "^1.8.1",
     "chai": "^4.3.4",
     "mocha": "^9.1.4"
   }
